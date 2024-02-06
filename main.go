@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"sync"
 )
 
 func main() {
@@ -14,27 +13,10 @@ func main() {
 
 	file1, file2 := os.Args[1], os.Args[2]
 
-	// preparing keys and count ahead
-	var keys1, keys2 []string
-	counts1 := map[string]int{}
-	counts2 := map[string]int{}
-
-	var wg sync.WaitGroup
-	wg.Add(2) // Increment the WaitGroup counter for two goroutines
-
-	go func() {
-		// process keys1 and counts1
-		keys1, counts1 = readCSVKeys(file1)
-		wg.Done()
-	}()
-
-	go func() {
-		// process keys2 and counts2
-		keys2, counts2 = readCSVKeys(file2)
-		wg.Done()
-	}()
-
-	wg.Wait() // Wait for both goroutines to finish
+	// process keys1 and counts1
+	keys1, counts1 := readCSVKeys(file1)
+	// process keys2 and counts2
+	keys2, counts2 := readCSVKeys(file2)
 
 	// distinct keys
 	distinctKeys1 := countDistinctKeys(keys1)
