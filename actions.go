@@ -55,11 +55,11 @@ func countDistinctKeys(keys []string) int {
 	return len(distinct)
 }
 
-func countDistinctOverlap(keys1, keys2 []string) int {
-	overlap := map[string]bool{}
+func countDistinctOverlap(keys1 []string, counts2 map[string]int) int {
+	overlap := map[string]struct{}{} // enables me create a set of unique string
 	for _, key := range keys1 {
-		if contains(keys2, key) {
-			overlap[key] = true // sets overlapping once no matter the number of occurrence
+		if _, ok := counts2[key]; ok {
+			overlap[key] = struct{}{}
 		}
 	}
 	return len(overlap)
